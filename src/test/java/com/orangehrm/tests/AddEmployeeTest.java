@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.time.Duration;
 
@@ -20,6 +21,7 @@ class AddEmployeeTest {
 
     @Test
     void testAddEmployee() {
+        Configuration.browserCapabilities = new ChromeOptions().addArguments("--remote-allow-origins=*");
         open("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
         new LoginPage()
                 .loginToApplication();
