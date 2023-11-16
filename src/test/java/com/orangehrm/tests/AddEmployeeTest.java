@@ -1,29 +1,32 @@
 package com.orangehrm.tests;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.Selectors;
-import com.codeborne.selenide.Selenide;
+import com.orangehrm.LeftMenuComponentType;
+import com.orangehrm.entity.EmployeeDetails;
+import com.orangehrm.entity.LoginDetails;
+import com.orangehrm.pages.EmployeeInformationPage;
 import com.orangehrm.pages.LoginPage;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import com.orangehrm.testdata.EmployeeTestData;
+import com.orangehrm.testdata.LoginTestData;
+import com.orangehrm.tests.base.TestSetup;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.time.Duration;
+import static com.orangehrm.LeftMenuComponentType.*;
 
-import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.*;
+class AddEmployeeTest extends TestSetup {
 
-class AddEmployeeTest {
+    private final EmployeeDetails employeeDetails = EmployeeTestData.getRandomEmployeeDetails();
+    private final LoginDetails loginDetails = LoginTestData.getValidLoginDetails();
 
     @Test
-    void testAddEmployee() {
-        Configuration.browserCapabilities = new ChromeOptions().addArguments("--remote-allow-origins=*");
-        open("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
-        new LoginPage()
-                .loginToApplication();
+    void testAddEmployee() throws InterruptedException {
+        LoginPage.getInstance()
+                .loginToApplication(loginDetails)
+                .navigateToEmployeeInformationPage()
+                .addNewEmployee(employeeDetails)
+                .checkWhetherEmployeeCreatedSuccessfully();
+
+        Thread.sleep(10000);
     }
 }
